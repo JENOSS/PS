@@ -1,0 +1,22 @@
+public class Main {
+
+    public static void main(String[] args){
+
+        System.out.println(solution(1,29));
+    }
+
+    public static String solution(int a, int b) {
+        String[] week = {"SUN","MON","TUE","WED","THU","FRI","SAT"};
+        int[] days= {31,29,31,30,31,30,31,31,30,31,30};
+
+        String answer ="";
+        int addVal=0;
+        for(int i =0 ; i<(a-1);i++){
+            addVal += days[i];
+        }
+        answer = week[((5+addVal+(b-1))%7)];
+        return answer;
+    }
+
+
+}
