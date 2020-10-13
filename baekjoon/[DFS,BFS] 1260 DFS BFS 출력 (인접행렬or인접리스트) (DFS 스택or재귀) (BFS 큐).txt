@@ -1,0 +1,207 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+
+/**
+ * INPUT : 인접행렬 or 인접리스트
+ * OUTPUT : DFS (재귀 or 스택) +  BFS ( 큐 )
+ */
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+
+        // 노드 개수, 간선개수, 시작노드
+        int n,e,start;
+        String[] set = in.readLine().split(" ");
+        n = Integer.parseInt(set[0]);
+        e = Integer.parseInt(set[1]);
+        start = Integer.parseInt(set[2]);
+
+
+        // ---------- 인접 리스트 ------------
+//        //인접 리스트와 방문 배열
+//        ArrayList<Integer>[] adjList = new ArrayList[n+1];
+//        boolean[] visited = new boolean[n+1];
+//
+//        //인접 리스트와 방문배열 초기화
+//        for(int i = 1 ; i <= n; i++){
+//            adjList[i] = new ArrayList<>();
+//            visited[i] = false;
+//        }
+//
+//        //간선 연결 (양방향)
+//        for(int i = 0 ; i< e;i++){
+//            String[] input = in.readLine().split(" ");
+//            int v1 = Integer.parseInt(input[0]);
+//            int v2 = Integer.parseInt(input[1]);
+//            adjList[v1].add(v2);
+//            adjList[v2].add(v1);
+//        }
+//
+//        //인접리스트 소팅 (방문 순서를 위해)
+//        for(int i = 1 ; i <= n ; i ++){
+//           Collections.sort(adjList[i]);
+//        }
+//
+//        for(int i = 1 ; i <= n ; i ++){
+//           System.out.println(adjList[i]);
+//        }
+
+
+          // ------------ 인접 행렬--- ------------
+        // 인접행렬과 방문행렬 초기화
+        int[][] adjArray = new int[n+1][n+1];
+        boolean[] visited = new boolean[n+1];
+
+        for(int i = 1 ; i <= n ; i++){
+            for(int j = 1 ; j <= n ; j++){
+                adjArray[i][j] = 0;
+            }
+            visited[i]=false;
+        }
+
+        // 인접행렬 생성
+        for(int i = 0 ; i < e; i++){
+            String[] input = in.readLine().split(" ");
+            int v1 = Integer.parseInt(input[0]);
+            int v2 = Integer.parseInt(input[1]);
+            adjArray[v1][v2] = 1;
+            adjArray[v2][v1] = 1;
+        }
+
+
+        // --------------- dfs (재귀 또는 스택)------------------
+
+        //dfsListRecursive(adjList,visited,start);
+        //dfsListStack(adjList,visited,start);
+
+        //dfsArrayRecursive(adjArray,visited,start);
+        dfsArrayStack(adjArray,visited,start);
+
+        // bfs 위한 초기화
+        System.out.print("\n");
+        for(int i = 1 ; i <= n ; i++){
+            visited[i]=false;
+        }
+
+        // ---------------------- bfs --------------------------
+        //bfsList(adjList,visited,start);
+        bfsArray(adjArray,visited,start);
+
+    }
+
+
+    public static void dfsListRecursive(ArrayList<Integer>[] adjList, boolean[] visited, int node){
+
+        if (visited[node]) return;
+
+        visited[node] = true;
+        System.out.print(node+" ");
+
+        for(int nextNode : adjList[node]){
+            dfsListRecursive(adjList,visited,nextNode);
+        }
+    }
+
+    public static void dfsListStack(ArrayList<Integer>[] adjList,boolean[] visited, int startNode){
+        Stack<Integer> st = new Stack<>();
+        st.push(startNode);
+        visited[startNode] = true;
+        System.out.print(startNode+" ");
+
+        while(!st.empty()){
+            int currentNode = st.peek();
+            boolean flag = false;
+
+            for(int adjNode : adjList[currentNode]){
+                if(!visited[adjNode]){
+                    st.push(adjNode);
+                    visited[adjNode] = true;
+                    flag = true;
+                    System.out.print(adjNode+" ");
+                    break;
+                }
+            }
+
+            if(!flag)
+                st.pop();
+        }
+    }
+
+    public static void dfsArrayRecursive(int[][] adjArray, boolean[] visited, int node){
+        visited[node]= true;
+        System.out.print(node+" ");
+
+        for(int i =1 ; i < adjArray.length ; i ++){
+            if(adjArray[node][i] == 1 && !visited[i] )
+                dfsArrayRecursive(adjArray,visited,i);
+        }
+    }
+
+    public static void dfsArrayStack(int[][] adjArray, boolean[] visited, int statNode){
+        Stack<Integer> st = new Stack<>();
+        st.push(statNode);
+        visited[statNode] = true;
+        System.out.print(statNode+" ");
+
+        while(!st.empty()){
+            int currentNode = st.peek();
+            boolean flag = false;
+
+            for(int i = 1 ; i < adjArray.length; i++){
+                if(adjArray[currentNode][i] == 1 && !visited[i]) {
+                    st.push(i);
+                    visited[i] = true;
+                    flag = true;
+                    System.out.print(i + " ");
+                    break;
+                }
+            }
+
+            if(!flag)
+                st.pop();
+
+        }
+    }
+
+    static void bfsList(ArrayList<Integer>[] adjList, boolean[] visited, int startNode){
+        Queue<Integer> queue = new LinkedList<>();
+        queue.offer(startNode);
+        visited[startNode] = true;
+
+        while(!queue.isEmpty()){
+            int currentNode = queue.poll();
+            System.out.print(currentNode+" ");
+
+            for(int node : adjList[currentNode]){
+                if(!visited[node]) {
+                    queue.offer(node);
+                    visited[node] = true;
+                }
+            }
+        }
+
+    }
+
+    static void bfsArray(int[][] adjArray, boolean[] visited, int startNode){
+        Queue<Integer> queue = new LinkedList<>();
+        queue.offer(startNode);
+        visited[startNode] = true;
+
+        while(!queue.isEmpty()){
+            int currentNode = queue.poll();
+            System.out.print(currentNode+" ");
+
+            for(int i = 1 ; i < adjArray.length ; i++){
+                if(adjArray[currentNode][i] == 1 && !visited[i]){
+                    queue.offer(i);
+                    visited[i] = true;
+                }
+            }
+        }
+    }
+
+
+}
