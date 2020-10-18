@@ -1,0 +1,52 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+public class Main {
+
+    public static int count = -1;
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+
+        //n : 노드 개수 , e : 엣지 개수
+        int n,e;
+        n = Integer.parseInt(in.readLine());
+        e = Integer.parseInt(in.readLine());
+
+        ArrayList<Integer>[] adjList = new ArrayList[n+1];
+        boolean[] checked = new boolean[n+1];
+
+        //초기화
+        for(int i = 1; i <= n ; i++){
+            adjList[i] = new ArrayList<>();
+            checked[i] = false;
+        }
+
+        for(int i = 0 ; i < e ; i ++){
+            String[] input = in.readLine().split(" ");
+            int v1 = Integer.parseInt(input[0]);
+            int v2 = Integer.parseInt(input[1]);
+            adjList[v1].add(v2);
+            adjList[v2].add(v1);
+        }
+
+        dfs(adjList,checked,1);
+
+        System.out.println(count);
+
+    }
+
+    public static void dfs(ArrayList<Integer>[] adjList, boolean[] checked, int node){
+        checked[node] = true;
+        count++;
+
+        for(int nextNode : adjList[node]){
+            if(!checked[nextNode]){
+                dfs(adjList,checked,nextNode);
+            }
+        }
+    }
+
+}
+
