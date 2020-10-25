@@ -1,0 +1,68 @@
+/*
+ * dfs로 했는데 좀 별로인 듯
+ * bfs로 하려했는데 depth를 어떻게 보관해야 될 지 생각 못했다.
+ * bfs로 하면 객체로 만들어 depth를 보관하자
+ */
+
+public class Main {
+
+    static int answer = 0;
+
+    public static void main(String[] args) {
+
+        String[] arr = {"hot", "dot", "dog", "lot", "log", "cog"};
+        System.out.println(solution("hit","cog",arr));
+    }
+
+    public static int solution(String begin, String target, String[] words) {
+        boolean[] checked = new boolean[6];
+        dfs(begin,target,words,checked,0);
+        return answer;
+    }
+
+    public static void dfs(String begin, String target, String[] words, boolean[] checked, int depth){
+
+
+        if(begin.equals(target)){
+            if(answer == 0)
+                answer = depth;
+            else{
+                if(answer > depth)
+                    answer = depth;
+            }
+            return;
+        }
+
+        for(int i = 0 ; i< words.length; i++){
+            if(compareText(begin, words[i])){
+                if(!checked[i]){
+                    checked[i] = true;
+                    boolean[] newChecked = new boolean[words.length];
+                    for(int j = 0; j < words.length; j ++){
+                        if(checked[j])
+                            newChecked[j] = true;
+                    }
+                    dfs(words[i], target, words, newChecked,depth+1);
+                }
+            }
+        }
+    }
+
+    public static boolean compareText(String word1, String word2){
+
+        int checked = 0;
+        for(int i=0; i < word2.length(); i++){
+            if(word1.charAt(i) != word2.charAt(i))
+                checked++;
+        }
+
+        if(checked > 1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+
+
+}

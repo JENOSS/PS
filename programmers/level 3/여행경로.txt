@@ -1,0 +1,58 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Main {
+
+    static List<String> routeList = new ArrayList<>();
+    static String route="";
+
+    public static void main(String[] args) {
+        String[][] val = {{"ICN", "JFK"}, {"HND", "IAD"}, {"JFK", "HND"}};
+        String[][] val2 ={{"ICN", "SFO"}, {"ICN", "ATL"}, {"SFO", "ATL"}, {"ATL", "ICN"}, {"ATL","SFO"}};
+        for(String s : solution((val2)))
+            System.out.print(s);
+    }
+
+    public static String[] solution(String[][] tickets) {
+
+        for(int i = 0 ; i < tickets.length ; i++){
+            String start = tickets[i][0];
+            String end = tickets[i][1];
+
+            if(start.equals("ICN")){
+                boolean[] visited = new boolean[tickets.length];
+                visited[i] = true;
+                route = start+",";
+                dfs(tickets,end,visited,1);
+            }
+        }
+
+        Collections.sort(routeList);
+
+        return routeList.get(0).split(",");
+    }
+
+    public static void dfs(String[][] tickets, String end, boolean[] visited, int cnt){
+        route += end+",";
+
+        if(cnt == visited.length){
+            routeList.add(route);
+            return;
+        }
+
+        for(int i = 0 ; i < tickets.length; i++){
+            String s = tickets[i][0];
+            String e = tickets[i][1];
+            if(end.equals(s) && !visited[i]){
+                visited[i] = true;
+                dfs(tickets,e,visited,cnt+1);
+                visited[i] = false;
+                route = route.substring(0,route.length()-4);
+            }
+        }
+    }
+
+
+
+}
