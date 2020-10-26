@@ -1,0 +1,51 @@
+import java.util.ArrayList;
+
+public class Main {
+
+    static class square{
+        int row;
+        int col;
+
+        square(int row, int col){
+            this.row = row;
+            this.col = col;
+        }
+    }
+
+    public static void main(String[] args)  {
+
+        for(int v : solution(24,24)){
+            System.out.print(v+" ");
+        }
+
+    }
+
+    public static int[] solution(int brown, int yellow) {
+        int[] answer = new int[2];
+
+        ArrayList<square> list = new ArrayList<>();
+
+        int squareArea = brown+yellow;
+
+        for(int i = 3; i <= Math.sqrt(squareArea) ; i++){
+            if(squareArea%i==0){
+                list.add(new square(i,squareArea/i));
+            }
+        }
+
+        for(square s : list){
+            int inside = (s.row-2) * (s.col-2);
+            int outside = (s.row*s.col) - inside;
+            if(inside == yellow && outside == brown) {
+                answer[0] = s.col;
+                answer[1] = s.row;
+            }
+
+        }
+
+        return answer;
+    }
+
+
+
+}
