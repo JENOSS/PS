@@ -1,0 +1,32 @@
+public class Main {
+
+    public static void main(String[] args)  {
+
+        System.out.println(solution("4177252841",4));
+    }
+
+    public static String solution(String number, int k) {
+        StringBuilder sb = new StringBuilder();
+        
+        int len = number.length(); 
+        int remainNumber = len - k;
+        int maxIdx = 0;
+
+        while(remainNumber > 0) { 
+            char maxChar = '0';
+            for(int i=maxIdx; i<=len-remainNumber && maxChar != '9'; i++) { 
+                if(number.charAt(i) > maxChar) { 
+                    maxChar = number.charAt(i);
+                    maxIdx = i;
+                }
+            }
+       
+            sb.append(maxChar);
+            maxIdx++;
+            remainNumber--;
+        }
+
+        return sb.toString();
+    }
+    
+}
