@@ -1,0 +1,46 @@
+import java.util.Stack;
+
+public class Main {
+
+    public static void main(String[] args) {
+        int[] price = { 1,2,3,2,3};
+        for(int i : solution(price)){
+            System.out.print(i+ " ");
+        }
+    }
+
+    public static int[] solution(int[] prices) {
+        int[] answer = new int[prices.length];
+
+        Stack<Integer> stack = new Stack<>();
+        stack.push(0);
+
+        for(int i = 1; i < prices.length ; i++){
+            boolean flag = true;
+
+            while(flag){
+                int top = stack.peek();
+                if(prices[i] < prices[top]){
+                    answer[top] = i - stack.pop();
+                    if(stack.empty()) flag=false;
+                }else{
+                    flag = false;
+                }
+            }
+
+            stack.push(i);
+        }
+
+        int len = prices.length-1;
+
+        while(!stack.empty()){
+            int top = stack.pop();
+            answer[top] = len-top;
+        }
+
+        return answer;
+    }
+
+
+
+}

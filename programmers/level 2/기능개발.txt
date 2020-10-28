@@ -1,0 +1,53 @@
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class Main {
+
+    public static void main(String[] args) {
+        int[] pro = { 93, 30 ,55};
+        int[] spe = {1, 30, 5};
+        for(int i : solution(pro,spe)){
+            System.out.print(i+ " ");
+        }
+    }
+
+    public static int[] solution(int[] progresses, int[] speeds) {
+        ArrayList<Integer> answerList = new ArrayList<>();
+        Queue<Integer> q = new LinkedList<>();
+
+        for(int i = 0 ; i < progresses.length ; i++){
+
+            int remainDay = (100-progresses[i]) % speeds[i] == 0 ?
+                    (100-progresses[i]) / speeds[i]:
+                    (100-progresses[i]) / speeds[i] +1 ;
+
+            q.add(remainDay);
+        }
+
+        int prev = q.poll();
+        int cntPerDay = 1;
+        while(!q.isEmpty()){
+            int current = q.poll();
+            if(current <= prev){
+                cntPerDay++;
+            }else{
+                answerList.add(cntPerDay);
+                cntPerDay = 1;
+                prev = current;
+            }
+        }
+        answerList.add(cntPerDay);
+
+        int[] answer = new int[answerList.size()];
+        for(int i = 0 ; i < answer.length; i++){
+            answer[i] = answerList.get(i);
+        }
+        return answer;
+
+    }
+
+
+
+}
