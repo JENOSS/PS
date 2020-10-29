@@ -1,0 +1,37 @@
+import java.util.PriorityQueue;
+
+public class Main {
+
+    public static void main(String[] args) {
+        int[] scovile = { 1,2,3,9,10,12};
+        System.out.println(solution(scovile,1));
+    }
+
+    public static int solution(int[] scoville, int K) {
+        int answer = 0;
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+
+        for(int num : scoville)
+            pq.add(num);
+
+        while(!pq.isEmpty()){
+            int min = pq.poll();
+            if(min < K){
+                if(pq.isEmpty()) {
+                    answer = -1;
+                }else{
+                    int nextMin = pq.poll();
+                    int mix = min + (nextMin * 2);
+                    pq.add(mix);
+                    answer++;
+                }
+
+            }else{
+                break;
+            }
+        }
+
+        return answer;
+    }
+
+}
