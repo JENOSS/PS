@@ -1,0 +1,91 @@
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        System.out.println(solution("BBBAAAB"));
+    }
+
+    public static int solution(String name) {
+        int answer = 0;
+        int changeCnt =0;
+        HashSet<Integer> set = new HashSet<>();
+
+        for(int i = 0 ; i < name.length(); i++){
+            if(name.charAt(i) != 'A'){
+                set.add(i);
+                if(i != 0) changeCnt++;
+            }
+        }
+
+        int changeCntClone= changeCnt;
+
+        int changeCntForward = 0;
+        for(int i = 1 ; i < name.length(); i++){
+            if(changeCntClone == 0)
+                break;
+            changeCntForward++;
+            if(name.charAt(i) != 'A') {
+                changeCntClone--;
+            }
+        }
+
+
+        changeCntClone= changeCnt;
+        int changeCntBackward = 0;
+
+        for(int i = name.length() -1 ; i >= 0 ; i--){
+            if(changeCntClone == 0) {
+                break;
+            }
+            changeCntBackward++;
+            if(name.charAt(i) != 'A') {
+                changeCntClone--;
+            }
+        }
+
+        changeCntClone = changeCnt;
+        int changeCntMix = 0 ;
+        int temp = 0;
+        for(int i = 1 ; i < name.length() / 2 ; i++){
+            if(changeCntClone == 0){
+                break;
+            }
+            temp++;
+            if(name.charAt(i) != 'A') {
+                changeCntClone--;
+                changeCntMix = temp;
+            }
+        }
+
+        changeCntMix*=2;
+
+
+        for(int i = name.length() -1 ; i >= name.length() / 2 ; i--){
+            if(changeCntClone == 0) {
+                break;
+            }
+            changeCntMix++;
+            if(name.charAt(i) != 'A') {
+                changeCntClone--;
+            }
+        }
+
+        for(int i : set){
+            if(name.charAt(i) < 'O'){
+                answer += name.charAt(i)-65;
+            }else{
+                answer += (name.charAt(i)-91)*-1;
+            }
+            System.out.println(answer);
+        }
+
+        answer += changeCntForward < changeCntBackward ? Math.min(changeCntForward, changeCntMix)
+                : Math.min(changeCntBackward, changeCntMix);
+
+        return answer;
+    }
+
+
+}
