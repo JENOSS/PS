@@ -1,0 +1,35 @@
+import java.util.Arrays;
+
+public class Main {
+
+    public static void main(String[] args)  {
+        int[][] input = {{7}, {3, 8}, {8, 1, 0}, {2, 7, 4, 4}, {4, 5, 2, 6, 5}};
+        System.out.println(solution(input));
+    }
+
+    public static int solution(int[][] triangle) {
+        int[][] answer = new int[triangle.length][];
+
+        for(int i = 0 ; i < answer.length ; i ++){
+            answer[i] = new int[triangle[i].length];
+        }
+
+        answer[0][0] = triangle[0][0];
+
+        for(int i = 0 ; i < answer.length-1; i ++){
+            for(int j = 0 ; j < answer[i].length; j++){
+                if(answer[i+1][j] < answer[i][j] + triangle[i+1][j])
+                    answer[i+1][j] = answer[i][j] + triangle[i+1][j];
+                if(answer[i+1][j+1] < answer[i][j] + triangle[i+1][j+1] )
+                    answer[i+1][j+1] = answer[i][j] + triangle[i+1][j+1];
+            }
+        }
+
+        Arrays.sort(answer[answer.length-1]);
+
+        int lastIdx = answer.length-1;
+        return answer[lastIdx][answer[lastIdx].length-1];
+
+    }
+
+}
