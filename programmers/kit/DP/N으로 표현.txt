@@ -1,0 +1,48 @@
+import java.util.HashSet;
+
+public class Main {
+
+    public static void main(String[] args)  {
+        System.out.println(solution(5,5));
+    }
+
+    public static int solution(int N, int number) {
+        int answer = 0;
+        answer = dpBottomUp(N,number);
+        return answer;
+    }
+
+    public static int dpBottomUp(int N, int number){
+        HashSet<Integer>[] numOfN = new HashSet[8];
+        int[] extra = {1,11,111,1111,11111,111111,1111111,11111111};
+        int answer=-1;
+
+        if(number == N) return 1;
+
+        for(int i = 0 ; i < 8 ; i ++){
+            numOfN[i] = new HashSet<>();
+            numOfN[i].add(N*extra[i]);
+        }
+
+        for(int i = 1 ; i < 8 ; i ++){
+            for(int j = 0  ; j < i ; j ++){
+                for(int n1 : numOfN[j]){
+                    for(int n2 : numOfN[i-j-1]){
+                        numOfN[i].add(n1 * n2);
+                        numOfN[i].add(n1 + n2);
+                        numOfN[i].add(n1 - n2);
+                        if(n2 != 0) numOfN[i].add(n1 / n2);
+                    }
+                }
+            }
+
+            if(numOfN[i].contains(number)){
+                answer = i+1;
+                break;
+            }
+
+        }
+
+        return answer;
+    }
+}
