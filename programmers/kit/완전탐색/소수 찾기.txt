@@ -1,0 +1,80 @@
+import java.util.*;
+
+
+class Solution {
+    
+    private TreeSet<String> set = new TreeSet<>();
+    
+    public int solution(String numbers) {
+
+        set = new TreeSet<>();
+        List<Character> num = new ArrayList<>();
+        List<Character> result = new ArrayList<>();
+        for(int i = 0 ; i < numbers.length(); i++){
+            num.add(numbers.charAt(i));
+        }
+
+        for(int i = 0 ; i < numbers.length() ; i++) {
+            permutation(num, result, numbers.length(),i+1);
+        }
+        
+        return set.size();
+
+    }
+
+    private void permutation(List<Character> num, List<Character> result, int n, int r){
+
+        if( r == 0){
+
+            if(result.get(0) != '0'){
+
+                String number = "";
+                for(int i = 0; i < result.size();i++){
+                    number += result.get(i);
+                }
+
+                if(!set.contains(number)){
+                    if(isPrime(Integer.parseInt(number))){
+                        set.add(number);
+                    }
+                }
+
+
+            }
+
+            return;
+        }
+
+        for ( int i = 0 ; i < n; i++){
+            result.add(num.remove(i));
+            permutation(num,result,n-1,r-1);
+            num.add(i,result.remove(result.size() - 1));
+        }
+    }
+
+    private boolean isPrime(int num){
+
+        int sqrt = (int)Math.sqrt(num);
+
+        if(num == 0 || num == 1){
+            return false;
+        }
+
+        if(num == 2){
+            return true;
+        }
+
+        if(num % 2 == 0){
+            return false;
+        }
+
+        for(int i = 3 ; i <= sqrt ; i+=2){
+            if(num % i == 0){
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+}

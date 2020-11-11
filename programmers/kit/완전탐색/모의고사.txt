@@ -1,0 +1,38 @@
+import java.util.*;
+class Solution {
+    
+    public int[] solution(int[] answers) {
+        int[][] people = {{1, 2, 3, 4, 5}, {2, 1, 2, 3, 2, 4, 2, 5}, {3, 3, 1, 1, 2, 2, 4, 4, 5, 5}};
+        int[] count = new int[3];
+        List<Integer> temp = new ArrayList<>(3);
+        int i;
+
+        for (i=0; i < answers.length; i++) {
+            if (people[0][i % 5] == answers[i])
+                count[0]++;
+
+            if (people[1][i % 8] == answers[i])
+                count[1]++;
+
+            if (people[2][i % 10] == answers[i])
+                count[2]++;
+        }
+
+        for(Integer val : count)
+            temp.add(val);
+
+
+        List<Integer> answerList = new ArrayList<>(3);
+        for(i=0;i<temp.size();i++){
+            if(Collections.max(temp) == count[i])
+                answerList.add(i+1);
+        }
+
+        int[] answer = new int[answerList.size()];
+
+        for(i=0;i<answerList.size();i++)
+            answer[i] = answerList.get(i);
+
+        return answer;
+    }
+}

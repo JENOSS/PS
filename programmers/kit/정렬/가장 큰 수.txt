@@ -1,0 +1,28 @@
+import java.util.*;
+class Solution {
+public String solution(int[] numbers) {
+        String answer = "";
+    
+        String[] tempNumbers = new String[numbers.length];
+
+        for(int i = 0; i< tempNumbers.length;i++)
+            tempNumbers[i] = String.valueOf(numbers[i]);
+
+        Arrays.sort(tempNumbers, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return (o2+o1).compareTo(o1+o2);
+            }
+        });
+
+        if(tempNumbers[0].startsWith("0")) {
+            answer+="0";
+        } else {
+            for(String num : tempNumbers){
+                answer +=num;
+            }
+        }
+        
+        return answer;
+    }
+}
