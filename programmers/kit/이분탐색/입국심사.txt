@@ -1,0 +1,39 @@
+import java.util.Arrays;
+
+class Solution {
+    public long solution(int n, int[] times) {
+        Arrays.sort(times);
+
+        long L = 1, R = (long) times[times.length-1] * (long) n;
+        long answer = R;
+        long mid = 0;
+
+        while(L <= R){
+            mid= (L + R) / 2;
+
+            if(calPerson(mid,n,times)){
+                answer = answer > mid ? mid : answer; // 보다 작은 시간
+                R = mid - 1;
+            }else{
+                L = mid + 1;
+            }
+        }
+
+        return answer;
+    }
+
+    public boolean calPerson(long mid, int n, int[] times){
+        long sum = 0;
+
+        for(int v : times){
+            sum += mid / v;
+        }
+
+        if(sum >= n){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+}

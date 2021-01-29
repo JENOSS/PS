@@ -1,0 +1,45 @@
+import java.util.Arrays;
+
+public class Main {
+
+    public static void main(String[] args) {
+        int[] rocks = {2,11,14,17,21};
+        System.out.println(solution(25,rocks,2));
+        
+    }
+
+    public static int solution(int distance, int[] rocks, int n) {
+        Arrays.sort(rocks);
+        
+        int answer = 0;
+        int L = 1, R = distance;
+        int mid = 0; // 임의의 최솟값 
+        
+        while(L <= R){
+            int cnt = 0; // 제거한 돌
+            int prev = 0;
+            mid = (L + R) / 2;
+            
+            for(int rock : rocks){ // 임의의 최솟값 보다 크거나 같게 유지
+                if(rock - prev < mid){
+                    cnt++; // 해당 돌 제거
+                }else{
+                    prev = rock; // 기준 돌 변경
+                }
+            }
+            
+            if(distance - prev < mid) cnt++; // 마지막 기준 돌과 끝과의 거리가 임의의 최솟값보다 작으면 제거
+            
+            if(cnt <= n){
+                answer = answer > mid ? answer : mid;
+                L = mid + 1;
+            }else{
+                R = mid - 1;
+            }
+        }
+        
+
+
+        return answer;
+    }
+}
