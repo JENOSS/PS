@@ -1,0 +1,54 @@
+import java.util.*;
+
+public class Main {
+
+    static class Item {
+        public int weight;
+        public int finishTime;
+
+        public Item(int weight, int finishTime){
+            this.weight = weight;
+            this.finishTime = finishTime;
+        }
+    }
+
+    public static void main(String[] args)  {
+        int bridge_length = 100;
+        int weight = 100;
+        int[] truck_weights = {10,10,10,10,10,10,10,10,10,10};
+        System.out.println(solution(bridge_length,weight,truck_weights));
+
+
+    }
+
+    public static int solution(int bridge_length, int weight, int[] truck_weights) {
+        int time = 0;
+        int timeAdd = bridge_length; // 시간 더하기 용
+
+        Deque<Item> queue = new ArrayDeque<>();
+
+        queue.add(new Item(0,1)); //dummy
+        bridge_length--; // for dummy
+
+        for(int truck_weight : truck_weights){
+            boolean success_add = false;
+            while(!success_add){
+                time++;
+                if(queue.peek().finishTime == time){
+                    weight += queue.poll().weight;
+                    bridge_length++;
+                }
+
+                if(bridge_length > 0 && weight-truck_weight >= 0){
+                    queue.add(new Item(truck_weight,time+timeAdd));
+                    bridge_length--;
+                    weight-=truck_weight;
+                    success_add = true;
+                }
+            }
+        }
+
+        return queue.getLast().finishTime;
+    }
+
+}
