@@ -1,0 +1,38 @@
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args)  {
+            int[] priority = {2,1,3,2};
+            System.out.println(solution(priority,3));
+    }
+
+    public static int solution(int[] priorities, int location) {
+        Queue<Integer> queue = new LinkedList<>();
+        for(int p : priorities) queue.add(p);
+
+        Arrays.sort(priorities); // 우선순위 비교를 위해
+        int bigIdx = priorities.length -1; // 정렬 후 가장 뒤에 있는 값이 가장 큰 값으로 queue에서 나갈 수 있다.
+
+        int locationInQueue = location; // 계속 변하는 큐 내에서 location의 위치
+        int answer = 0; // 큐에서 나간 개수 (우선순위가 높아서 먼저 나간것들)
+
+        while(!queue.isEmpty()){
+            int current = queue.poll();
+
+            if(current == priorities[bigIdx - answer]){ // 현재 아이템이 가장 큰 수 ? (bigidx - answer (우선순위 중 나간것 제외하고 가장 큰 값) )
+                answer++; // 나갔다는 의미
+                locationInQueue--; // 목표 아이템의 큐 안 에서의 위치가 한 칸 앞으로 이동됨
+                if(locationInQueue < 0) break; // 목표 아이템이 큐에서 제일 앞에 있던 값이면 끝
+            }else{
+                queue.add(current); // 큐의 맨 뒤로 넣어줌
+                locationInQueue--; // 목표 아이템의 큐 안에서의 위치가 한 칸 앞으로 이동됨
+                if(locationInQueue < 0) locationInQueue = queue.size()-1; // 제일 앞에 있었으면 가장 뒤로감
+            }
+        }
+
+        return answer;
+    }
+
+
+}
